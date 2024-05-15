@@ -1,9 +1,11 @@
 @LocationCheck.API_HostAddress = http://localhost:5100
 
-GET {{LocationCheck.API_HostAddress}}/location/
+GET {{LocationCheck.API_HostAddress}}/location/check
 Accept: application/json
 
 ###
 
-GET {{LocationCheck.API_HostAddress}}/location1/
-Accept: applicati
+GET {{LocationCheck.API_HostAddress}}/location/users
+Accept: application/json
+
+###
