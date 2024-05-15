@@ -1,11 +1,13 @@
 using LocationCheck.External;
 using LocationCheck.Data;
+using LocationCheck.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddLocationCheckExternal(builder.Configuration);
 builder.Services.AddLocationCheckData(builder.Configuration);
+builder.Services.AddLocationCheckSecurity(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

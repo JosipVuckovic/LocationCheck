@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /LocationCheck.API/appsettings.Development.json
+/.idea/.idea.LocationCheck/.idea

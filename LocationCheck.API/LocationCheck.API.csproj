@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LocationCheck.Data\LocationCheck.Data.csproj" />
     <ProjectReference Include="..\LocationCheck.External\LocationCheck.External.csproj" />
+    <ProjectReference Include="..\LocationCheck.Security\LocationCheck.Security.csproj" />
   </ItemGroup>
 
   <ItemGroup>
