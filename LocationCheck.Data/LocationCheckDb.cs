@@ -23,7 +23,7 @@ namespace LocationCheck.Data
 
             modelBuilder.Entity<ApiUserEntity>(entity =>
             {                
-                entity.HasKey(e => e.Username);
+                entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Username)
                       .IsUnique();
                 entity.Property(e => e.Username)
@@ -31,10 +31,15 @@ namespace LocationCheck.Data
                 entity.HasIndex(e => e.ApiKey);                
             });
 
-            
+            modelBuilder.Entity<RequestResponseLogEntity>(entity =>
+            {
+                entity.HasKey(e => e.RequestId);
+                entity.HasOne<ApiUserEntity>(e => e.ApiUserEntity);
+            });
+
         }
 
         public DbSet<ApiUserEntity> ApiUsers { get; set; }
-
+        public DbSet<RequestResponseLogEntity> RequestResponseLogs { get; set; }
     }
 }

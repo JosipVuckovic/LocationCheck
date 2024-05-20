@@ -4,6 +4,7 @@ using LocationCheck.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocationCheck.Data.Migrations
 {
     [DbContext(typeof(LocationCheckDb))]
-    partial class LocationCheckDbModelSnapshot : ModelSnapshot
+    [Migration("20240520153929_Upd_Change_of_API_User_Key")]
+    partial class Upd_Change_of_API_User_Key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,41 +51,6 @@ namespace LocationCheck.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ApiUsers");
-                });
-
-            modelBuilder.Entity("LocationCheck.Data.Entities.RequestResponseLog", b =>
-                {
-                    b.Property<Guid>("RequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ApiUserEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Request")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RequestId");
-
-                    b.HasIndex("ApiUserEntityId");
-
-                    b.ToTable("RequestResponseLogs");
-                });
-
-            modelBuilder.Entity("LocationCheck.Data.Entities.RequestResponseLog", b =>
-                {
-                    b.HasOne("LocationCheck.Data.Entities.ApiUserEntity", "ApiUserEntity")
-                        .WithMany()
-                        .HasForeignKey("ApiUserEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApiUserEntity");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,7 +13,7 @@ namespace LocationCheck.Data
             IConfiguration configuration)
         {            
 
-            services.AddDbContext<LocationCheckDb>(
+            services.AddDbContextFactory<LocationCheckDb>(
                 opts => opts.UseSqlServer(
                     configuration.GetConnectionString(StringConstants.ApplicationDb),
                     x => x.MigrationsAssembly(
