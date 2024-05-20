@@ -1,3 +1,4 @@
+using LocationCheck.API.Middlewares;
 using LocationCheck.External;
 using LocationCheck.Data;
 using LocationCheck.Security;
@@ -34,5 +35,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<RequestIdCheckMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<ResponseLoggingMiddleware>();
 
 app.Run();
