@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationCheck.API", "Locati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationCheck.Data", "LocationCheck.Data\LocationCheck.Data.csproj", "{7CBD40CD-E7F3-451B-8C70-1321C6B9DC70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationCheck.Security", "LocationCheck.Security\LocationCheck.Security.csproj", "{1CFF7BCC-5A21-487D-B23F-9905B534AB8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationCheck.Security", "LocationCheck.Security\LocationCheck.Security.csproj", "{1CFF7BCC-5A21-487D-B23F-9905B534AB8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationCheck.RequestNotifyConsole", "LocationCheck.RequestNotifyConsole\LocationCheck.RequestNotifyConsole.csproj", "{DFA588C0-6AB9-4532-A325-064210CA7E31}"
+	ProjectSection(ProjectDependencies) = postProject
+		{17668A2E-3ED7-4547-ACC7-4898ED88569F} = {17668A2E-3ED7-4547-ACC7-4898ED88569F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +38,10 @@ Global
 		{1CFF7BCC-5A21-487D-B23F-9905B534AB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CFF7BCC-5A21-487D-B23F-9905B534AB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CFF7BCC-5A21-487D-B23F-9905B534AB8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFA588C0-6AB9-4532-A325-064210CA7E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA588C0-6AB9-4532-A325-064210CA7E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA588C0-6AB9-4532-A325-064210CA7E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA588C0-6AB9-4532-A325-064210CA7E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

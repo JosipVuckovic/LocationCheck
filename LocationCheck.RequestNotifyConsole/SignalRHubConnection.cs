@@ -11,12 +11,18 @@ namespace LocationCheck.RequestNotifyConsole
 {
     public class SignalRConnection
     {
-        public async Task Start()
+        private readonly string _hubUrl;
+
+        public SignalRConnection(string hubUrl)
         {
-            var url = "http://localhost:5100/requestlogs";
+            _hubUrl = hubUrl;
+        }
+
+        public async Task Start()
+        {           
 
             var connection = new HubConnectionBuilder()
-                .WithUrl(url)
+                .WithUrl(_hubUrl)
                 .WithAutomaticReconnect()
                 .Build();          
 
