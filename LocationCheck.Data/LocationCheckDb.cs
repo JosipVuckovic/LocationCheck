@@ -1,12 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Threading.Tasks;
 using LocationCheck.Data.Entities;
+using LocationCheck.Data.Models;
+using Newtonsoft.Json;
 
 namespace LocationCheck.Data
 {
@@ -35,11 +30,38 @@ namespace LocationCheck.Data
             {
                 entity.HasKey(e => e.RequestId);
                 entity.HasOne<ApiUserEntity>(e => e.ApiUserEntity);
+                entity.Property(e => e.Request)
+                    .HasConversion(
+                        x => FromObject(x),
+                        x => ToObject<RequestLog>(x) 
+                    );
+                entity.Property(e => e.Response)
+                    .HasConversion(
+                        x => FromObject((x ?? null)!),
+                        x => ToNullableObject<ResponseLog>(x) 
+                    );
             });
 
         }
 
         public DbSet<ApiUserEntity> ApiUsers { get; set; }
         public DbSet<RequestResponseLogEntity> RequestResponseLogs { get; set; }
+
+        private T ToObject<T>(string objectString) where T : class, new()
+        {
+            return JsonConvert.DeserializeObject<T>(objectString) ?? new T();
+        }
+        
+        private T? ToNullableObject<T>(string objectString) where T : class
+        {
+            return JsonConvert.DeserializeObject<T>(objectString);
+        }
+
+        private string FromObject<T>(T stringToSerialize) where T : class
+        {
+            return JsonConvert.SerializeObject(stringToSerialize);
+        }
     }
+    
+    
 }

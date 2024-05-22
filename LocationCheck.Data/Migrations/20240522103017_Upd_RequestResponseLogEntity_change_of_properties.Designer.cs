@@ -4,6 +4,7 @@ using LocationCheck.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocationCheck.Data.Migrations
 {
     [DbContext(typeof(LocationCheckDb))]
-    partial class LocationCheckDbModelSnapshot : ModelSnapshot
+    [Migration("20240522103017_Upd_RequestResponseLogEntity_change_of_properties")]
+    partial class Upd_RequestResponseLogEntity_change_of_properties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
