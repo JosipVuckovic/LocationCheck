@@ -13,7 +13,7 @@ public class RequestIdCheckMiddleware
     public async Task Invoke(HttpContext context)
     {
         var requestId = context.Request.Headers["RequestId"];
-
+        
         if (string.IsNullOrEmpty(requestId))
         {
             context.Response.Clear();
