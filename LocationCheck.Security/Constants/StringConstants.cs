@@ -8,4 +8,5 @@ internal static class StringConstants
    public const string MissingAuthHeader = "Missing Auth Header";
    public const string InvalidHeader = "Invalid Auth Header";
    public const string MalformedApiKey = "Malformed Api key";
+   public const string BasicAuthentication = "BasicAuthentication";
 }
