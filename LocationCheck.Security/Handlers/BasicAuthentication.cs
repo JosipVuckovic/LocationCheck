@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text.Encodings.Web;
 using LocationCheck.Data;
+using LocationCheck.Data.Models;
 using LocationCheck.Security.Constants;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +31,8 @@ namespace LocationCheck.Security.Handlers
 
         //TODO: move all those strings to constants
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
-        {
+        {           
+
             if (!Request.Headers.ContainsKey(StringConstants.Authorization))
             {
                 return AuthenticateResult.Fail(StringConstants.MissingAuthHeader);
@@ -53,7 +55,7 @@ namespace LocationCheck.Security.Handlers
             
             if (!Guid.TryParse(authenticationHeader.Parameter, out var apiKey))
             {
-                return AuthenticateResult.Fail(StringConstants.Unauthorised);
+                return AuthenticateResult.Fail(StringConstants.MalformedApiKey);
             }
 
             var user = await _locationCheckDb.ApiUsers.Where(_ => _.ApiKey == apiKey).FirstOrDefaultAsync();
@@ -62,10 +64,10 @@ namespace LocationCheck.Security.Handlers
             {
                 return AuthenticateResult.Fail(StringConstants.Unauthorised);
             }
-            
-            var identity = new GenericIdentity(user.Id.ToString());
+
+            var identity = new ApiUserIdentity(user.Username, user.Id);
             var principal = new GenericPrincipal(identity, null);
-            var ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), StringConstants.Basic);
+            var ticket = new AuthenticationTicket(principal, StringConstants.Basic);
 
             return AuthenticateResult.Success(ticket);
         }
