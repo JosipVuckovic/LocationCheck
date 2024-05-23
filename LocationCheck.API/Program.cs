@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using LocationCheck.API.Hubs;
+using LocationCheck.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,14 @@ builder.Services.AddLocationCheckExternal(builder.Configuration);
 builder.Services.AddLocationCheckData(builder.Configuration);
 builder.Services.AddLocationCheckSecurity(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+        options.SerializerSettings.Converters.Add(new StringEnumConverter());
+        options.SerializerSettings.MaxDepth = 64;
+    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -41,17 +49,12 @@ builder.Services.AddSwaggerGen(c =>
     });
     c.OperationFilter<SwaggerHeaderParameterFilter>();
 });
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-        options.SerializerSettings.Converters.Add(new StringEnumConverter());
-        options.SerializerSettings.MaxDepth = 64;
-    });
 
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<RequestNotifyHub>();
+builder.Services.AddScoped<ILocationCheckService, LocationCheckService>();
 
 
 var app = builder.Build();
@@ -71,16 +74,13 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-
+//So we leave the signalR from middlewares
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+{    
+    appBuilder.UseMiddleware<RequestIdCheckMiddleware>();
+    appBuilder.UseMiddleware<RequestResponseMiddleware>();     
+});
 
 app.MapHub<RequestNotifyHub>("requestlogs");
-
-//So we leave the signalR from auth and middlewares
-app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
-{
-    appBuilder.UseMiddleware<RequestIdCheckMiddleware>();
-    appBuilder.UseMiddleware<RequestResponseMiddleware>();
-    appBuilder.UseAuthorization();
-});
 
 app.Run();
