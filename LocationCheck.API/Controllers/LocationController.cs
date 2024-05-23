@@ -1,43 +1,36 @@
-using LocationCheck.Data;
-using LocationCheck.External.GoogleMapsPlatform;
+using LocationCheck.API.Models;
+using LocationCheck.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LocationCheck.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class LocationController : ControllerBase
-    {      
+    {   
+        private readonly ILocationCheckService _locationCheckService;
 
-        private readonly ILogger<LocationController> _logger;
-        private readonly IGoogleMapsPlatformClient _googleMapsPlatformClient;
-        private readonly LocationCheckDb _locationCheckDb;
-
-        public LocationController(ILogger<LocationController> logger, IGoogleMapsPlatformClient googleMapsPlatformClient, LocationCheckDb locationCheckDb)
+        public LocationController(ILocationCheckService locationCheckService)
         {
-            _logger = logger;
-            _googleMapsPlatformClient = googleMapsPlatformClient;
-            _locationCheckDb = locationCheckDb;
+            _locationCheckService = locationCheckService;
         }
-
         
-        [HttpGet("check")]
-        public async Task<IActionResult> Get(CancellationToken cancellationToken)
+        /// <summary>
+        /// Sends location check to Google to lookup places around coordinate
+        /// <br/> Only lat lng params are required, the rest is nullable
+        /// <br/> can be filtered by place type and keyword
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpPost("check")]        
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        public async Task<IActionResult> Get([FromBody]LocationCheckRequest request ,CancellationToken cancellationToken)
         {
-            var latlng = "40.714224,-73.961452";
-
-            var test = await _googleMapsPlatformClient.GeocodeAsync(null, null, null, latlng, null, null, null, null, null, cancellationToken);
-
-            return Ok(test);
+            var result = await _locationCheckService.CheckLocationAsync(request, new CancellationToken());
+            return Ok(result);
         }
-
-        [HttpGet("users")]
-        public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
-        {
-            var test = await _locationCheckDb.ApiUsers.ToListAsync(cancellationToken);
-
-            return Ok(test);
-        }
+        
     }
 }
