@@ -42,22 +42,39 @@ namespace LocationCheck.Data
                     );
             });
 
+            modelBuilder.Entity<PlaceBasicDataEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.ExternalIdentifier).IsRequired();
+                entity.HasIndex(e => e.ExternalIdentifier);
+            });
+            
+            modelBuilder.Entity<UserFavoritePlaceEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.PlaceId).IsRequired();
+                entity.Property(e => e.UserId).IsRequired();
+                entity.HasOne<ApiUserEntity>(e => e.User);
+                entity.HasOne<PlaceBasicDataEntity>(e => e.Place);
+            });
         }
 
         public DbSet<ApiUserEntity> ApiUsers { get; set; }
         public DbSet<RequestResponseLogEntity> RequestResponseLogs { get; set; }
+        public DbSet<PlaceBasicDataEntity> PlaceBasicData { get; set; }
+        public DbSet<UserFavoritePlaceEntity> FavoritePlaces { get; set; }
 
-        private T ToObject<T>(string objectString) where T : class, new()
+        private static T ToObject<T>(string objectString) where T : class, new()
         {
             return JsonConvert.DeserializeObject<T>(objectString) ?? new T();
         }
         
-        private T? ToNullableObject<T>(string objectString) where T : class
+        private static T? ToNullableObject<T>(string objectString) where T : class
         {
             return JsonConvert.DeserializeObject<T>(objectString);
         }
 
-        private string FromObject<T>(T stringToSerialize) where T : class
+        private static string FromObject<T>(T stringToSerialize) where T : class
         {
             return JsonConvert.SerializeObject(stringToSerialize);
         }

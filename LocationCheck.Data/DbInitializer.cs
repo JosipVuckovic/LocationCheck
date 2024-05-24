@@ -15,7 +15,7 @@ namespace LocationCheck.Data
         public async Task InitAsync()
         {            
 
-            await _context.Database.MigrateAsync();
+            await _context.Database.MigrateAsync();            
         }
     }
 }
