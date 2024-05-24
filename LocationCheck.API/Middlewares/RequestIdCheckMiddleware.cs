@@ -17,7 +17,9 @@ public class RequestIdCheckMiddleware
         if (string.IsNullOrEmpty(requestId))
         {
             context.Response.Clear();
+            context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsync("Missing RequestsId Header");
             return;
         }
 

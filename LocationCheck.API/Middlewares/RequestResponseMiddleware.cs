@@ -28,10 +28,7 @@ namespace LocationCheck.API.Middlewares
             if (requestLog?.Response is not null)
             {
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync(JsonConvert.SerializeObject(new
-                {
-                    result = requestLog.Response
-                }));
+                await context.Response.WriteAsync(requestLog.Response.Body);
                 await context.Response.CompleteAsync();
                 return;
             }
