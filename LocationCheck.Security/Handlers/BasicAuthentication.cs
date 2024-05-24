@@ -29,9 +29,8 @@ namespace LocationCheck.Security.Handlers
             _locationCheckDb = locationCheckDb;
         }
 
-        //TODO: move all those strings to constants
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
-        {           
+        {
 
             if (!Request.Headers.ContainsKey(StringConstants.Authorization))
             {
@@ -43,16 +42,16 @@ namespace LocationCheck.Security.Handlers
                 return AuthenticateResult.Fail(StringConstants.InvalidHeader);
             }
 
-            if(!string.Equals(authenticationHeader.Scheme, StringConstants.Basic, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.Equals(authenticationHeader.Scheme, StringConstants.Basic, StringComparison.InvariantCultureIgnoreCase))
             {
                 return AuthenticateResult.Fail(StringConstants.Unauthorised);
             }
-            
+
             if (string.IsNullOrEmpty(authenticationHeader.Parameter))
             {
                 return AuthenticateResult.Fail(StringConstants.Unauthorised);
             }
-            
+
             if (!Guid.TryParse(authenticationHeader.Parameter, out var apiKey))
             {
                 return AuthenticateResult.Fail(StringConstants.MalformedApiKey);
